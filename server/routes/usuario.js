@@ -1,12 +1,15 @@
 const express = require("express");
 const app = express();
-const bcrypt = require('bcrypt');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+const bcrypt = require('bcrypt');
 const _ = require('underscore')
 const Usuario = require("../models/usuario"); //Importamos el modelo
+const { verificaToken,verificaRole } = require('../middlewares/autenticacion');
 
-app.get("/usuario", (req, res) => {
+
+app.get("/usuario",verificaToken,(req, res) => {
 
   /* if(!req.query.desde){
     return res.status(400).json({
@@ -38,7 +41,7 @@ app.get("/usuario", (req, res) => {
 
 });
 
-app.get("/usuario/:id", (req, res) => {
+app.get("/usuario/:id",verificaToken, (req, res) => {
 
   if(!req.params.id){
     return res.status(400).json({
@@ -65,7 +68,8 @@ app.get("/usuario/:id", (req, res) => {
 
 });
 
-app.post("/usuario", (req, res) => {
+//[verificaToken,verificaRole] <- es un array de Middlewares para proteger las rutas primero debe cumplir una para que pueda proceder a la otra
+app.post("/usuario",[verificaToken,verificaRole] ,(req, res) => {
   const { nombre, email, password, role } = req.body;
 
   let usuario = new Usuario({
@@ -97,7 +101,7 @@ app.post("/usuario", (req, res) => {
  
 });
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id",verificaToken, (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body,['nombre','email','img','role','estado']) //_ es para acceder a Underscore.js una libreria que nos facilita otros metodos de Javascript funcionales
 
@@ -116,7 +120,7 @@ app.put("/usuario/:id", (req, res) => {
   })
 });
 
-app.delete("/usuario/:id", (req, res) => {
+app.delete("/usuario/:id",verificaToken, (req, res) => {
 
   let id = req.params.id
 
@@ -147,7 +151,7 @@ app.delete("/usuario/:id", (req, res) => {
 
 });
 
-app.put("/usuario/status/:id", (req, res) => {
+app.put("/usuario/status/:id",verificaToken, (req, res) => {
 
   let id = req.params.id
   let cambiaEstado = {

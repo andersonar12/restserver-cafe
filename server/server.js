@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 const app = express();
 
 
+/* Configuracion de Rutas */
+app.use( require('./routes/index'))
 
-app.use( require('./routes/usuario'))
 
 //Conexion a la base de datos MongoDB
 
