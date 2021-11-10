@@ -1,5 +1,5 @@
 require('./config/config')
-
+const autoImport = require('auto-import')
 const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path')
@@ -19,8 +19,10 @@ mongoose.connect(process.env.URLDB,{useNewUrlParser:true},(err,res)=>{
 
   if(err)throw err;
   console.log('Database Conected');
+
+  //Una vez conectada la base de datos abrir puerto del servidor
+  app.listen(process.env.PORT, () => {
+    console.log("Listen in puerto 3000");
+  });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("Listen in puerto 3000");
-});

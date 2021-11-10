@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <img src="http://localhost:3000/imagen/productos/61856c9b90944da3f49c596a-1636400949833.jpg" alt="" srcset="">
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <a href="#" onclick="signOut();">Sign out</a>
 
@@ -44,6 +45,14 @@
           .catch((error) => {
             console.log(error);
           });
+
+          
+
+          /* axios.get('https://randomuser.me/api/').then((resp)=>{
+            const user = resp.data.results[0];
+            user;
+          }) */
+          
       }
     </script>
   </body>
